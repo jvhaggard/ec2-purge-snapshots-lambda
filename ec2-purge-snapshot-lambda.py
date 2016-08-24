@@ -13,25 +13,25 @@ VOLUMES = []
 
 # Dictionary of tags to use to filter the snapshots. May specify multiple
 # eg. {'key': 'value'} or {'key1': 'value1', 'key2': 'value2', ...}
-TAGS = {}
+TAGS = {'Name': 'jenkins-master-1tb-backup'}
 
 # The number of hours to keep ALL snapshots
-HOURS = 0
+HOURS = 4
 
 # The number of days to keep ONE snapshot per day
-DAYS = 0
+DAYS = 2
 
 # The number of weeks to keep ONE snapshot per week
-WEEKS = 0
+WEEKS = 1
 
 # The number of months to keep ONE snapshot per month
-MONTHS = 0
+MONTHS = 1
 
 # AWS region in which the snapshots exist
 REGION = "us-east-1"
 
 # The timezone in which daily snapshots will be kept at midnight
-TIMEZONE = "UTC"
+TIMEZONE = "America/New York"
 
 
 def purge_snapshots(id, snaps, counts):
@@ -79,7 +79,7 @@ def purge_snapshots(id, snaps, counts):
                     print(("Keeping {}: {}, {} hours old - will never"
                           " delete newest snapshot").format(
                           snap.snapshot_id, snap_date,
-                          snap_age.seconds/3600)
+                          snap_age.seconds / 3600)
                           )
                     keep_count += 1
                 else:
@@ -93,7 +93,7 @@ def purge_snapshots(id, snaps, counts):
                     delete_count += 1
         else:
             print("Keeping {}: {}, {} hours old - {}-hour threshold".format(
-                  snap.snapshot_id, snap_date, snap_age.seconds/3600, HOURS)
+                  snap.snapshot_id, snap_date, snap_age.seconds / 3600, HOURS)
                   )
             keep_count += 1
     counts[id] = [delete_count, keep_count]
